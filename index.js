@@ -2,7 +2,9 @@ const fs = require("fs/promises");
 const express = require("express");
 const cors = require("cors");
 const _ = require("lodash");
+const mongoose = require("mongoose");
 const { v4: uuid } = require("uuid");
+const Date = require("./models/datesModel");
 
 const app = express();
 
@@ -40,9 +42,23 @@ app.post("/dates", async (req, res) => {
     return req.sendStatus(400);
   }
 
-  // save entry
-
-  res.status(201).json({ id: id, date: date, bin: bin });
+  try {
+    const entry = await Date.create({ date, bin });
+    res.status(201).json(entry);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
 });
 
-app.listen(3000, () => console.log("API server is running..."));
+mongoose
+  .connect(
+    "mongodb+srv://wabawden:o6vNnQ96Cjy0xVLC@cluster0.b3clvfr.mongodb.net/bin-api?retryWrites=true&w=majority"
+  )
+  .then(() => {
+    console.log("connected to MongoDB..");
+    app.listen(3000, () => console.log("API server is running..."));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
