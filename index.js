@@ -7,6 +7,10 @@ const app = express();
 
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("This is bin server");
+});
+
 app.get("/dates", async (req, res) => {
   try {
     const entries = await Date.find({});
