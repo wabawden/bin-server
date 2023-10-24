@@ -59,7 +59,8 @@ mongoose
   )
   .then(() => {
     console.log("connected to MongoDB..");
-    app.listen(3000, () => console.log("API server is running..."));
+    // app.listen(3000, () => console.log("API server is running..."));
+    module.exports = app;
   })
   .catch((error) => {
     console.log(error);
