@@ -1,7 +1,19 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const { v4: uuid } = require("uuid");
-const Date = require("./models/datesModel");
+
+const datesSchema = mongoose.Schema({
+  date: {
+    type: String,
+    required: [true, "please provide a date"],
+  },
+  bin: {
+    type: Number,
+    required: [true, "please provide a bin type"],
+  },
+});
+
+const Date = mongoose.model("Date", datesSchema);
 
 const app = express();
 
@@ -59,8 +71,8 @@ mongoose
   )
   .then(() => {
     console.log("connected to MongoDB..");
-    // app.listen(3000, () => console.log("API server is running..."));
-    module.exports = app;
+    app.listen(3000, () => console.log("API server is running..."));
+    // module.exports = app;
   })
   .catch((error) => {
     console.log(error);
