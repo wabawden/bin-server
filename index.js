@@ -1,7 +1,4 @@
-const fs = require("fs/promises");
 const express = require("express");
-const cors = require("cors");
-const _ = require("lodash");
 const mongoose = require("mongoose");
 const { v4: uuid } = require("uuid");
 const Date = require("./models/datesModel");
@@ -10,12 +7,13 @@ const app = express();
 
 app.use(express.json());
 
-app.get("/dates", (req, res) => {
-  res.json({
-    id: "id",
-    date: "date",
-    bins: "bins",
-  });
+app.get("/dates", async (req, res) => {
+  try {
+    const entries = await Date.find({});
+    res.status(200).json(entries);
+  } catch (error) {
+    res.status(500).json({ message: message.error });
+  }
 });
 
 app.get("/dates/:id", async (req, res) => {
